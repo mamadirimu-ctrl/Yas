@@ -232,6 +232,215 @@ input:focus{
 
 <!-- PENJUALAN -->
 
+    /* =========================
+   PENJUALAN
+========================= */
+
+function simpanPenjualan(){
+
+    var produk = document.getElementById("produk").value;
+
+    var modal = ambilAngka(
+        document.getElementById("modalInput").value
+    );
+
+    var jual = ambilAngka(
+        document.getElementById("jualInput").value
+    );
+
+    if(produk === "" || modal <= 0 || jual <= 0){
+
+        alert("Isi produk, modal dan harga jual!");
+
+        return;
+    }
+
+    transaksi.push({
+
+        produk: produk,
+
+        modal: modal,
+
+        jual: jual,
+
+        untung: jual - modal,
+
+        waktu: new Date().toLocaleString("id-ID")
+
+    });
+
+    localStorage.setItem(
+        "transaksiPulsa",
+        JSON.stringify(transaksi)
+    );
+
+    document.getElementById("produk").value = "";
+
+    document.getElementById("modalInput").value = "";
+
+    document.getElementById("jualInput").value = "";
+
+    tampilkanPenjualan();
+
+    if(typeof hitung === "function"){
+        hitung();
+    }
+
+    alert("✅ Penjualan berhasil ditambahkan!");
+}
+
+
+/* TOMBOL SIMPAN */
+
+document.getElementById("simpanPenjualan")
+.addEventListener("click", simpanPenjualan);
+
+
+/* TAMPILKAN PENJUALAN */
+
+function tampilkanPenjualan(){
+
+    var daftar =
+        document.getElementById("daftarPenjualan");
+
+    if(!daftar) return;
+
+    daftar.innerHTML = "";
+
+    if(transaksi.length === 0){
+
+        daftar.innerHTML =
+        '<div class="empty">Belum ada penjualan.</div>';
+
+        return;
+    }
+
+    for(var i = 0; i < transaksi.length; i++){
+
+        var item = transaksi[i];
+
+        daftar.innerHTML +=
+
+        '<div class="item">' +
+
+        '<b>🛒 ' + item.produk + '</b>' +
+
+        '<div>Modal: ' +
+        rupiah(item.modal) +
+        '</div>' +
+
+        '<div>Jual: ' +
+        rupiah(item.jual) +
+        '</div>' +
+
+        '<div>Keuntungan: <b>' +
+        rupiah(item.untung) +
+        '</b></div>' +
+
+        '<div class="date">' +
+        item.waktu +
+        '</div>' +
+
+        '<button class="btn" ' +
+        'onclick="editPenjualan(' + i + ')">' +
+        '✏️ Edit' +
+        '</button>' +
+
+        '<button class="btn red" ' +
+        'onclick="hapusPenjualan(' + i + ')">' +
+        '🗑 Hapus' +
+        '</button>' +
+
+        '</div>';
+    }
+}
+
+
+/* EDIT PENJUALAN */
+
+function editPenjualan(index){
+
+    var item = transaksi[index];
+
+    var produkBaru =
+        prompt("Nama produk:", item.produk);
+
+    if(produkBaru === null) return;
+
+    var modalBaru =
+        prompt("Harga modal:", item.modal);
+
+    if(modalBaru === null) return;
+
+    var jualBaru =
+        prompt("Harga jual:", item.jual);
+
+    if(jualBaru === null) return;
+
+    modalBaru = ambilAngka(modalBaru);
+
+    jualBaru = ambilAngka(jualBaru);
+
+    if(
+        produkBaru.trim() === "" ||
+        modalBaru <= 0 ||
+        jualBaru <= 0
+    ){
+
+        alert("Data tidak valid!");
+
+        return;
+    }
+
+    transaksi[index].produk = produkBaru;
+
+    transaksi[index].modal = modalBaru;
+
+    transaksi[index].jual = jualBaru;
+
+    transaksi[index].untung =
+        jualBaru - modalBaru;
+
+    localStorage.setItem(
+        "transaksiPulsa",
+        JSON.stringify(transaksi)
+    );
+
+    tampilkanPenjualan();
+
+    if(typeof hitung === "function"){
+        hitung();
+    }
+
+    alert("✅ Penjualan berhasil diubah!");
+}
+
+
+/* HAPUS PENJUALAN */
+
+function hapusPenjualan(index){
+
+    if(!confirm("Hapus penjualan ini?")) return;
+
+    transaksi.splice(index,1);
+
+    localStorage.setItem(
+        "transaksiPulsa",
+        JSON.stringify(transaksi)
+    );
+
+    tampilkanPenjualan();
+
+    if(typeof hitung === "function"){
+        hitung();
+    }
+}
+
+
+/* TAMPILKAN SAAT HALAMAN DIBUKA */
+
+tampilkanPenjualan();
+
 <section id="penjualan" class="page">
 
     <div class="box">
