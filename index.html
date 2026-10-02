@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catatan Usaha Pulsa</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #f2f4f7;
+  color: #222;
+}
+
+header {
+  background: #1677ff;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+.container {
+  max-width: 650px;
+  margin: auto;
+  padding: 15px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.card {
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #0001;
+}
+
+.card h3 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: #666;
+}
+
+.card p {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.box {
+  background: white;
+  margin-top: 15px;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #0001;
+}
+
+input, button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 15px;
+}
+
+button {
+  background: #1677ff;
+  color: white;
+  border: none;
+  font-weight: bold;
+}
+
+button.hapus {
+  background: #e53935;
+}
+
+button.lunas {
+  background: #2e9d50;
+}
+
+.utang {
+  border-bottom: 1px solid #eee;
+  padding: 12px 0;
+}
+
+.utang:last-child {
+  border-bottom: none;
+}
+
+.tanggal {
+  color: #777;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.total-utang {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>📱 Catatan Usaha Pulsa</h2>
+  <p>Penjualan & Utang Pelanggan</p>
+</header>
+
+<div class="container">
+
+  <!-- RINGKASAN -->
+  <div class="cards">
+
+    <div class="card">
+      <h3>Modal</h3>
+      <p id="modal">Rp0</p>
+    </div>
+
+    <div class="card">
+      <h3>Penjualan</h3>
+      <p id="penjualan">Rp0</p>
+    </div>
+
+    <div class="card">
+      <h3>Keuntungan</h3>
+      <p id="keuntungan">Rp0</p>
+    </div>
+
+    <div class="card">
+      <h3>Total Utang</h3>
+      <p id="totalUtang">Rp0</p>
+    </div>
+
+  </div>
+
+
+  <!-- TRANSAKSI -->
+  <div class="box">
+
+    <h3>➕ Tambah Transaksi</h3>
+
+    <input id="produk"
+      type="text"
+      placeholder="Contoh: Pulsa 10K">
+
+    <input id="modalInput"
+      type="number"
+      placeholder="Harga modal">
+
+    <input id="jualInput"
+      type="number"
+      placeholder="Harga jual">
+
+    <button onclick="tambahTransaksi()">
+      Tambah Transaksi
+    </button>
+
+  </div>
+
+
+  <!-- REKAP -->
+  <div class="box">
+
+    <h3>📅 Rekap Penjualan</h3>
+
+    <div id="daftar"></div>
+
+    <button
+      class="hapus"
+      onclick="hapusSemuaTransaksi()">
+      Hapus Semua Transaksi
+    </button>
+
+  </div>
+
+
+  <!-- UTANG -->
+  <div class="box">
+
+    <h3>💰 Tambah Utang Pelanggan</h3>
+
+    <input id="namaPelanggan"
+      type="text"
+      placeholder="Nama pelanggan">
+
+    <input id="nomorPelanggan"
+      type="text"
+      placeholder="Nomor HP pelanggan">
+
+    <input id="jumlahUtang"
+      type="number"
+      placeholder="Jumlah utang">
+
+    <button onclick="tambahUtang()">
+      Tambah Utang
+    </button>
+
+  </div>
+
+
+  <!-- DAFTAR UTANG -->
+  <div class="box">
+
+    <h3>📋 Daftar Utang Pelanggan</h3>
+
+    <div class="total-utang">
+      Total: <span id="totalUtang2">Rp0</span>
+    </div>
+
+    <div id="daftarUtang"></div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+// ==========================
+// DATA TRANSAKSI
+// ==========================
+
+let transaksi =
+JSON.parse(localStorage.getItem("transaksiPulsa")) || [];
+
+
+// ==========================
+// DATA UTANG
+// ==========================
+
+let utang =
+JSON.parse(localStorage.getItem("utangPelanggan")) || [];
+
+
+// ==========================
+// FORMAT RUPIAH
+// ==========================
+
+function rupiah(angka) {
+  return "Rp" + Number(angka).toLocaleString("id-ID");
+}
+
+
+// ==========================
+// TAMBAH TRANSAKSI
+// ==========================
+
+function tambahTransaksi() {
+
+  const produk =
+    document.getElementById("produk").value;
+
+  const modal =
+    Number(document.getElementById("modalInput").value);
+
+  const jual =
+    Number(document.getElementById("jualInput").value);
+
+  if (!produk || !modal || !jual) {
+
+    alert("Lengkapi data transaksi!");
+
+    return;
+  }
+
+  const data = {
+
+    produk: produk,
+
+    modal: modal,
+
+    jual: jual,
+
+    untung: jual - modal,
+
+    waktu: new Date().toLocaleString("id-ID")
+
+  };
+
+  transaksi.push(data);
+
+  localStorage.setItem(
+    "transaksiPulsa",
+    JSON.stringify(transaksi)
+  );
+
+  document.getElementById("produk").value = "";
+  document.getElementById("modalInput").value = "";
+  document.getElementById("jualInput").value = "";
+
+  tampilkanTransaksi();
+}
+
+
+// ==========================
+// TAMPILKAN TRANSAKSI
+// ==========================
+
+function tampilkanTransaksi() {
+
+  let totalModal = 0;
+  let totalJual = 0;
+  let totalUntung = 0;
+
+  const daftar =
+    document.getElementById("daftar");
+
+  daftar.innerHTML = "";
+
+  transaksi.forEach((item, index) => {
+
+    totalModal += item.modal;
+
+    totalJual += item.jual;
+
+    totalUntung += item.untung;
+
+    daftar.innerHTML += `
+
+      <div class="utang">
+
+        <b>${item.produk}</b>
+
+        <div>
+          Modal: ${rupiah(item.modal)}
+        </div>
+
+        <div>
+          Jual: ${rupiah(item.jual)}
+        </div>
+
+        <div>
+          Untung:
+          <b>${rupiah(item.untung)}</b>
+        </div>
+
+        <div class="tanggal">
+          ${item.waktu}
+        </div>
+
+        <button
+          class="hapus"
+          onclick="hapusTransaksi(${index})">
+          Hapus
+        </button>
+
+      </div>
+
+    `;
+  });
+
+  document.getElementById("modal").innerText =
+    rupiah(totalModal);
+
+  document.getElementById("penjualan").innerText =
+    rupiah(totalJual);
+
+  document.getElementById("keuntungan").innerText =
+    rupiah(totalUntung);
+}
+
+
+// ==========================
+// HAPUS TRANSAKSI
+// ==========================
+
+function hapusTransaksi(index) {
+
+  transaksi.splice(index, 1);
+
+  localStorage.setItem(
+    "transaksiPulsa",
+    JSON.stringify(transaksi)
+  );
+
+  tampilkanTransaksi();
+}
+
+
+// ==========================
+// HAPUS SEMUA TRANSAKSI
+// ==========================
+
+function hapusSemuaTransaksi() {
+
+  if (!confirm("Hapus semua transaksi?")) {
+    return;
+  }
+
+  transaksi = [];
+
+  localStorage.removeItem("transaksiPulsa");
+
+  tampilkanTransaksi();
+}
+
+
+// ==========================
+// TAMBAH UTANG
+// ==========================
+
+function tambahUtang() {
+
+  const nama =
+    document.getElementById("namaPelanggan").value;
+
+  const nomor =
+    document.getElementById("nomorPelanggan").value;
+
+  const jumlah =
+    Number(document.getElementById("jumlahUtang").value);
+
+  if (!nama || !jumlah) {
+
+    alert("Nama dan jumlah utang wajib diisi!");
+
+    return;
+  }
+
+  const data = {
+
+    nama: nama,
+
+    nomor: nomor,
+
+    jumlah: jumlah,
+
+    waktu: new Date().toLocaleString("id-ID")
+
+  };
+
+  utang.push(data);
+
+  localStorage.setItem(
+    "utangPelanggan",
+    JSON.stringify(utang)
+  );
+
+  document.getElementById("namaPelanggan").value = "";
+  document.getElementById("nomorPelanggan").value = "";
+  document.getElementById("jumlahUtang").value = "";
+
+  tampilkanUtang();
+}
+
+
+// ==========================
+// TAMPILKAN UTANG
+// ==========================
+
+function tampilkanUtang() {
+
+  const daftar =
+    document.getElementById("daftarUtang");
+
+  daftar.innerHTML = "";
+
+  let total = 0;
+
+  utang.forEach((item, index) => {
+
+    total += item.jumlah;
+
+    daftar.innerHTML += `
+
+      <div class="utang">
+
+        <b>👤 ${item.nama}</b>
+
+        <div>
+          📱 ${item.nomor || "-"}
+        </div>
+
+        <div>
+          💰 Utang:
+          <b>${rupiah(item.jumlah)}</b>
+        </div>
+
+        <div class="tanggal">
+          ${item.waktu}
+        </div>
+
+        <button
+          class="lunas"
+          onclick="lunas(${index})">
+          ✅ Sudah Lunas
+        </button>
+
+        <button
+          class="hapus"
+          onclick="hapusUtang(${index})">
+          🗑 Hapus
+        </button>
+
+      </div>
+
+    `;
+  });
+
+  document.getElementById("totalUtang").innerText =
+    rupiah(total);
+
+  document.getElementById("totalUtang2").innerText =
+    rupiah(total);
+}
+
+
+// ==========================
+// TANDAI LUNAS
+// ==========================
+
+function lunas(index) {
+
+  const pelanggan = utang[index];
+
+  if (
+    confirm(
+      pelanggan.nama +
+      " sudah membayar " +
+      rupiah(pelanggan.jumlah) +
+      "?"
+    )
+  ) {
+
+    utang.splice(index, 1);
+
+    localStorage.setItem(
+      "utangPelanggan",
+      JSON.stringify(utang)
+    );
+
+    tampilkanUtang();
+  }
+}
+
+
+// ==========================
+// HAPUS UTANG
+// ==========================
+
+function hapusUtang(index) {
+
+  if (!confirm("Hapus catatan utang ini?")) {
+    return;
+  }
+
+  utang.splice(index, 1);
+
+  localStorage.setItem(
+    "utangPelanggan",
+    JSON.stringify(utang)
+  );
+
+  tampilkanUtang();
+}
+
+
+// ==========================
+// JALANKAN SAAT WEBSITE DIBUKA
+// ==========================
+
+tampilkanTransaksi();
+
+tampilkanUtang();
+
+</script>
+
+</body>
+  </html>
