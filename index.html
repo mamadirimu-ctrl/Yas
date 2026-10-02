@@ -2,208 +2,56 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Catatan Usaha Pulsa</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  font-family:Arial,sans-serif;
-}
-
-body{
-  margin:0;
-  background:#f2f4f7;
-  color:#222;
-}
-
-header{
-  background:#1677ff;
-  color:white;
-  padding:20px;
-  text-align:center;
-}
-
-header h2{
-  margin:0;
-}
-
-header p{
-  margin:6px 0 0;
-}
-
-nav{
-  display:flex;
-  background:white;
-  position:sticky;
-  top:0;
-  z-index:10;
-  box-shadow:0 2px 8px #0002;
-  overflow-x:auto;
-}
-
-nav button{
-  min-width:100px;
-  padding:12px 8px;
-  border:0;
-  background:white;
-  color:#555;
-  font-size:13px;
-  font-weight:bold;
-}
-
-nav button.active{
-  color:#1677ff;
-  border-bottom:3px solid #1677ff;
-}
-
-.container{
-  max-width:650px;
-  margin:auto;
-  padding:15px;
-}
-
-.menu{
-  display:none;
-}
-
-.menu.active{
-  display:block;
-}
-
-.cards{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-.card{
-  background:white;
-  padding:15px;
-  border-radius:12px;
-  box-shadow:0 2px 8px #0001;
-}
-
-.card h3{
-  margin:0 0 8px;
-  font-size:14px;
-  color:#666;
-}
-
-.card p{
-  margin:0;
-  font-size:19px;
-  font-weight:bold;
-}
-
-.box{
-  background:white;
-  margin-top:15px;
-  padding:15px;
-  border-radius:12px;
-  box-shadow:0 2px 8px #0001;
-}
-
-input{
-  width:100%;
-  padding:12px;
-  margin-top:8px;
-  border-radius:8px;
-  border:1px solid #ddd;
-  font-size:15px;
-}
-
-.btn{
-  width:100%;
-  padding:12px;
-  margin-top:8px;
-  border-radius:8px;
-  border:0;
-  background:#1677ff;
-  color:white;
-  font-weight:bold;
-  font-size:15px;
-}
-
-.hapus{
-  background:#e53935;
-}
-
-.lunas{
-  background:#2e9d50;
-}
-
-.item{
-  border-bottom:1px solid #eee;
-  padding:12px 0;
-}
-
-.item:last-child{
-  border-bottom:none;
-}
-
-.tanggal{
-  color:#777;
-  font-size:12px;
-  margin-top:5px;
-}
-
-.total{
-  font-size:22px;
-  font-weight:bold;
-  margin-bottom:10px;
-}
-
-.kosong{
-  text-align:center;
-  color:#777;
-  padding:15px;
-}
-
-@media(max-width:400px){
-  .cards{
-    grid-template-columns:1fr;
-  }
-}
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{margin:0;background:#f2f4f7;color:#222}
+header{background:#1677ff;color:white;padding:20px;text-align:center}
+header h2{margin:0}
+header p{margin:6px 0 0}
+nav{display:flex;background:white;position:sticky;top:0;z-index:10;box-shadow:0 2px 8px #0002;overflow-x:auto}
+nav button{min-width:100px;padding:12px 8px;border:0;background:white;color:#555;font-size:13px;font-weight:bold}
+nav button.active{color:#1677ff;border-bottom:3px solid #1677ff}
+.container{max-width:650px;margin:auto;padding:15px}
+.menu{display:none}
+.menu.active{display:block}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card{background:white;padding:15px;border-radius:12px;box-shadow:0 2px 8px #0001}
+.card h3{margin:0 0 8px;font-size:14px;color:#666}
+.card p{margin:0;font-size:19px;font-weight:bold}
+.box{background:white;margin-top:15px;padding:15px;border-radius:12px;box-shadow:0 2px 8px #0001}
+input{width:100%;padding:12px;margin-top:8px;border-radius:8px;border:1px solid #ddd;font-size:15px}
+.btn{width:100%;padding:12px;margin-top:8px;border-radius:8px;border:0;background:#1677ff;color:white;font-weight:bold;font-size:15px}
+.hapus{background:#e53935}
+.lunas{background:#2e9d50}
+.item{border-bottom:1px solid #eee;padding:12px 0}
+.tanggal{color:#777;font-size:12px;margin-top:5px}
+.total{font-size:22px;font-weight:bold;margin-bottom:10px}
+.kosong{text-align:center;color:#777;padding:15px}
+@media(max-width:400px){.cards{grid-template-columns:1fr}}
 </style>
 </head>
 
 <body>
 
 <header>
-  <h2>📱 Catatan Usaha Pulsa</h2>
-  <p>Keuangan usaha dalam satu aplikasi</p>
+<h2>📱 Catatan Usaha Pulsa</h2>
+<p>Keuangan usaha dalam satu aplikasi</p>
 </header>
 
-<!-- MENU -->
 <nav>
-
-<button class="active" onclick="bukaMenu('dashboard',this)">
-🏠<br>Dashboard
-</button>
-
-<button onclick="bukaMenu('penjualan',this)">
-🛒<br>Penjualan
-</button>
-
-<button onclick="bukaMenu('utang',this)">
-💳<br>Utang
-</button>
-
-<button onclick="bukaMenu('pengeluaran',this)">
-💸<br>Pengeluaran
-</button>
-
-<button onclick="bukaMenu('rekap',this)">
-📊<br>Rekap
-</button>
-
+<button class="active" onclick="bukaMenu('dashboard',this)">🏠<br>Dashboard</button>
+<button onclick="bukaMenu('penjualan',this)">🛒<br>Penjualan</button>
+<button onclick="bukaMenu('utang',this)">💳<br>Utang</button>
+<button onclick="bukaMenu('pengeluaran',this)">💸<br>Pengeluaran</button>
+<button onclick="bukaMenu('rekap',this)">📊<br>Rekap</button>
 </nav>
 
 <div class="container">
 
-<!-- ================= DASHBOARD ================= -->
-
+<!-- DASHBOARD -->
 <section id="dashboard" class="menu active">
 
 <div class="cards">
@@ -236,41 +84,30 @@ input{
 </div>
 
 <div class="box">
-
 <h3>📱 Catatan Usaha</h3>
-
-<p>
-Gunakan menu di atas untuk mengelola
-penjualan, utang, pengeluaran dan melihat
-rekap usaha.
-</p>
-
+<p>Gunakan menu di atas untuk mengelola usaha kamu.</p>
 </div>
 
 </section>
 
 
-<!-- ================= PENJUALAN ================= -->
-
+<!-- PENJUALAN -->
 <section id="penjualan" class="menu">
 
 <div class="box">
 
 <h3>➕ Tambah Penjualan</h3>
 
-<input
-id="produk"
-type="text"
-placeholder="Contoh: Pulsa 10K">
+<input id="produk" type="text" placeholder="Contoh: Pulsa 10K">
 
-<input
-id="modalInput"
-type="number"
+<input id="modalInput"
+type="text"
+inputmode="numeric"
 placeholder="Harga modal">
 
-<input
-id="jualInput"
-type="number"
+<input id="jualInput"
+type="text"
+inputmode="numeric"
 placeholder="Harga jual">
 
 <button class="btn" onclick="tambahTransaksi()">
@@ -279,39 +116,564 @@ placeholder="Harga jual">
 
 </div>
 
-
 <div class="box">
-
 <h3>📋 Riwayat Penjualan</h3>
-
 <div id="daftar"></div>
-
 </div>
 
 </section>
 
 
-<!-- ================= UTANG ================= -->
-
+<!-- UTANG -->
 <section id="utang" class="menu">
 
 <div class="box">
 
 <h3>💳 Tambah Utang</h3>
 
-<input
-id="namaPelanggan"
+<input id="namaPelanggan"
 type="text"
 placeholder="Nama pelanggan">
 
-<input
-id="nomorPelanggan"
+<input id="nomorPelanggan"
 type="text"
 placeholder="Nomor HP">
 
-<input
-id="jumlahUtang"
-type="number"
+<input id="jumlahUtang"
+type="text"
+inputmode="numeric"
 placeholder="Jumlah utang">
 
-<button class="btn" onclick="t
+<button class="btn" onclick="tambahUtang()">
+💾 Simpan Utang
+</button>
+
+</div>
+
+<div class="box">
+
+<h3>📋 Daftar Utang</h3>
+
+<div class="total">
+Total: <span id="totalUtang2">Rp0</span>
+</div>
+
+<div id="daftarUtang"></div>
+
+</div>
+
+</section>
+
+
+<!-- PENGELUARAN -->
+<section id="pengeluaran" class="menu">
+
+<div class="box">
+
+<h3>💸 Tambah Pengeluaran</h3>
+
+<input id="namaPengeluaran"
+type="text"
+placeholder="Contoh: Beli kertas">
+
+<input id="jumlahPengeluaran"
+type="text"
+inputmode="numeric"
+placeholder="Jumlah pengeluaran">
+
+<button class="btn" onclick="tambahPengeluaran()">
+💾 Simpan Pengeluaran
+</button>
+
+</div>
+
+<div class="box">
+<h3>📋 Riwayat Pengeluaran</h3>
+<div id="daftarPengeluaran"></div>
+</div>
+
+</section>
+
+
+<!-- REKAP -->
+<section id="rekap" class="menu">
+
+<div class="box">
+
+<h3>📊 Rekap Usaha</h3>
+
+<div class="item">Modal: <b id="rekapModal">Rp0</b></div>
+<div class="item">Penjualan: <b id="rekapPenjualan">Rp0</b></div>
+<div class="item">Keuntungan: <b id="rekapKeuntungan">Rp0</b></div>
+<div class="item">Utang: <b id="rekapUtang">Rp0</b></div>
+<div class="item">Pengeluaran: <b id="rekapPengeluaran">Rp0</b></div>
+
+</div>
+
+</section>
+
+</div>
+
+
+<script>
+
+/* DATA */
+
+let transaksi=JSON.parse(localStorage.getItem("transaksiPulsa"))||[];
+let utang=JSON.parse(localStorage.getItem("utangPelanggan"))||[];
+let pengeluaran=JSON.parse(localStorage.getItem("pengeluaranUsaha"))||[];
+
+
+/* FORMAT RUPIAH */
+
+function rupiah(angka){
+return "Rp"+Number(angka||0).toLocaleString("id-ID");
+}
+
+
+/* AMBIL ANGKA DARI INPUT */
+
+function angkaDariInput(nilai){
+return Number(String(nilai).replace(/\D/g,""))||0;
+}
+
+
+/* FORMAT INPUT UANG */
+
+function formatUang(input){
+
+let angka=input.value.replace(/\D/g,"");
+
+if(angka){
+input.value="Rp"+Number(angka).toLocaleString("id-ID");
+}
+
+}
+
+
+/* PASANG FORMAT KE SEMUA KOLOM UANG */
+
+document.getElementById("modalInput")
+.addEventListener("input",function(){
+formatUang(this);
+});
+
+document.getElementById("jualInput")
+.addEventListener("input",function(){
+formatUang(this);
+});
+
+document.getElementById("jumlahUtang")
+.addEventListener("input",function(){
+formatUang(this);
+});
+
+document.getElementById("jumlahPengeluaran")
+.addEventListener("input",function(){
+formatUang(this);
+});
+
+
+/* MENU */
+
+function bukaMenu(nama,tombol){
+
+document.querySelectorAll(".menu").forEach(function(menu){
+menu.classList.remove("active");
+});
+
+document.getElementById(nama).classList.add("active");
+
+document.querySelectorAll("nav button").forEach(function(btn){
+btn.classList.remove("active");
+});
+
+tombol.classList.add("active");
+
+window.scrollTo(0,0);
+}
+
+
+/* PENJUALAN */
+
+function tambahTransaksi(){
+
+let produk=document.getElementById("produk").value;
+
+let modal=angkaDariInput(
+document.getElementById("modalInput").value
+);
+
+let jual=angkaDariInput(
+document.getElementById("jualInput").value
+);
+
+if(!produk||modal<=0||jual<=0){
+alert("Lengkapi data penjualan!");
+return;
+}
+
+transaksi.push({
+produk:produk,
+modal:modal,
+jual:jual,
+untung:jual-modal,
+waktu:new Date().toLocaleString("id-ID")
+});
+
+localStorage.setItem(
+"transaksiPulsa",
+JSON.stringify(transaksi)
+);
+
+document.getElementById("produk").value="";
+document.getElementById("modalInput").value="";
+document.getElementById("jualInput").value="";
+
+tampilkanSemua();
+}
+
+
+/* TAMPILKAN PENJUALAN */
+
+function tampilkanTransaksi(){
+
+let daftar=document.getElementById("daftar");
+
+daftar.innerHTML="";
+
+if(transaksi.length===0){
+daftar.innerHTML='<div class="kosong">Belum ada penjualan.</div>';
+return;
+}
+
+transaksi.forEach(function(item,index){
+
+daftar.innerHTML+=`
+
+<div class="item">
+
+<b>🛒 ${item.produk}</b>
+
+<div>Modal: ${rupiah(item.modal)}</div>
+
+<div>Jual: ${rupiah(item.jual)}</div>
+
+<div>Keuntungan:
+<b>${rupiah(item.untung)}</b>
+</div>
+
+<div class="tanggal">${item.waktu}</div>
+
+<button class="btn hapus"
+onclick="hapusTransaksi(${index})">
+🗑 Hapus
+</button>
+
+</div>
+
+`;
+
+});
+}
+
+
+/* HAPUS PENJUALAN */
+
+function hapusTransaksi(index){
+
+if(!confirm("Hapus transaksi ini?"))return;
+
+transaksi.splice(index,1);
+
+localStorage.setItem(
+"transaksiPulsa",
+JSON.stringify(transaksi)
+);
+
+tampilkanSemua();
+}
+
+
+/* TAMBAH UTANG */
+
+function tambahUtang(){
+
+let nama=document.getElementById("namaPelanggan").value;
+
+let nomor=document.getElementById("nomorPelanggan").value;
+
+let jumlah=angkaDariInput(
+document.getElementById("jumlahUtang").value
+);
+
+if(!nama||jumlah<=0){
+
+alert("Nama dan jumlah utang wajib diisi!");
+
+return;
+}
+
+utang.push({
+
+nama:nama,
+nomor:nomor,
+jumlah:jumlah,
+waktu:new Date().toLocaleString("id-ID")
+
+});
+
+localStorage.setItem(
+"utangPelanggan",
+JSON.stringify(utang)
+);
+
+document.getElementById("namaPelanggan").value="";
+document.getElementById("nomorPelanggan").value="";
+document.getElementById("jumlahUtang").value="";
+
+tampilkanSemua();
+}
+
+
+/* TAMPILKAN UTANG */
+
+function tampilkanUtang(){
+
+let daftar=document.getElementById("daftarUtang");
+
+daftar.innerHTML="";
+
+if(utang.length===0){
+
+daftar.innerHTML=
+'<div class="kosong">Tidak ada utang.</div>';
+
+return;
+}
+
+utang.forEach(function(item,index){
+
+daftar.innerHTML+=`
+
+<div class="item">
+
+<b>👤 ${item.nama}</b>
+
+<div>📱 ${item.nomor||"-"}</div>
+
+<div>💰 Utang:
+<b>${rupiah(item.jumlah)}</b>
+</div>
+
+<div class="tanggal">${item.waktu}</div>
+
+<button class="btn lunas"
+onclick="lunas(${index})">
+✅ Sudah Lunas
+</button>
+
+<button class="btn hapus"
+onclick="hapusUtang(${index})">
+🗑 Hapus
+</button>
+
+</div>
+
+`;
+
+});
+}
+
+
+/* LUNAS */
+
+function lunas(index){
+
+if(!confirm(
+"Utang "+utang[index].nama+
+" sebesar "+rupiah(utang[index].jumlah)+
+" sudah dibayar?"
+))return;
+
+utang.splice(index,1);
+
+localStorage.setItem(
+"utangPelanggan",
+JSON.stringify(utang)
+);
+
+tampilkanSemua();
+}
+
+
+/* HAPUS UTANG */
+
+function hapusUtang(index){
+
+if(!confirm("Hapus catatan utang ini?"))return;
+
+utang.splice(index,1);
+
+localStorage.setItem(
+"utangPelanggan",
+JSON.stringify(utang)
+);
+
+tampilkanSemua();
+}
+
+
+/* TAMBAH PENGELUARAN */
+
+function tambahPengeluaran(){
+
+let nama=document.getElementById("namaPengeluaran").value;
+
+let jumlah=angkaDariInput(
+document.getElementById("jumlahPengeluaran").value
+);
+
+if(!nama||jumlah<=0){
+
+alert("Lengkapi data pengeluaran!");
+
+return;
+}
+
+pengeluaran.push({
+
+nama:nama,
+jumlah:jumlah,
+waktu:new Date().toLocaleString("id-ID")
+
+});
+
+localStorage.setItem(
+"pengeluaranUsaha",
+JSON.stringify(pengeluaran)
+);
+
+document.getElementById("namaPengeluaran").value="";
+document.getElementById("jumlahPengeluaran").value="";
+
+tampilkanSemua();
+}
+
+
+/* TAMPILKAN PENGELUARAN */
+
+function tampilkanPengeluaran(){
+
+let daftar=document.getElementById("daftarPengeluaran");
+
+daftar.innerHTML="";
+
+if(pengeluaran.length===0){
+
+daftar.innerHTML=
+'<div class="kosong">Belum ada pengeluaran.</div>';
+
+return;
+}
+
+pengeluaran.forEach(function(item,index){
+
+daftar.innerHTML+=`
+
+<div class="item">
+
+<b>💸 ${item.nama}</b>
+
+<div>${rupiah(item.jumlah)}</div>
+
+<div class="tanggal">${item.waktu}</div>
+
+<button class="btn hapus"
+onclick="hapusPengeluaran(${index})">
+🗑 Hapus
+</button>
+
+</div>
+
+`;
+
+});
+}
+
+
+/* HAPUS PENGELUARAN */
+
+function hapusPengeluaran(index){
+
+if(!confirm("Hapus pengeluaran ini?"))return;
+
+pengeluaran.splice(index,1);
+
+localStorage.setItem(
+"pengeluaranUsaha",
+JSON.stringify(pengeluaran)
+);
+
+tampilkanSemua();
+}
+
+
+/* HITUNG RINGKASAN */
+
+function hitungRingkasan(){
+
+let modal=0;
+let jual=0;
+let untung=0;
+let totalUtang=0;
+let totalPengeluaran=0;
+
+transaksi.forEach(function(item){
+
+modal+=item.modal;
+jual+=item.jual;
+untung+=item.untung;
+
+});
+
+utang.forEach(function(item){
+totalUtang+=item.jumlah;
+});
+
+pengeluaran.forEach(function(item){
+totalPengeluaran+=item.jumlah;
+});
+
+document.getElementById("modal").innerText=rupiah(modal);
+document.getElementById("penjualan").innerText=rupiah(jual);
+document.getElementById("keuntungan").innerText=rupiah(untung);
+document.getElementById("totalUtang").innerText=rupiah(totalUtang);
+document.getElementById("totalUtang2").innerText=rupiah(totalUtang);
+document.getElementById("totalPengeluaran").innerText=rupiah(totalPengeluaran);
+
+document.getElementById("rekapModal").innerText=rupiah(modal);
+document.getElementById("rekapPenjualan").innerText=rupiah(jual);
+document.getElementById("rekapKeuntungan").innerText=rupiah(untung);
+document.getElementById("rekapUtang").innerText=rupiah(totalUtang);
+document.getElementById("rekapPengeluaran").innerText=rupiah(totalPengeluaran);
+}
+
+
+/* JALANKAN */
+
+function tampilkanSemua(){
+
+tampilkanTransaksi();
+tampilkanUtang();
+tampilkanPengeluaran();
+hitungRingkasan();
+
+}
+
+tampilkanSemua();
+
+</script>
+
+</body>
+  </html>
